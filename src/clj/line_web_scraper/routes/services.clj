@@ -1,16 +1,17 @@
 (ns line-web-scraper.routes.services
   (:require
-    [reitit.swagger :as swagger]
-    [reitit.swagger-ui :as swagger-ui]
-    [reitit.ring.coercion :as coercion]
-    [reitit.coercion.spec :as spec-coercion]
-    [reitit.ring.middleware.muuntaja :as muuntaja]
-    [reitit.ring.middleware.multipart :as multipart]
-    [reitit.ring.middleware.parameters :as parameters]
-    [line-web-scraper.middleware.formats :as formats]
-    [line-web-scraper.middleware.exception :as exception]
-    [ring.util.http-response :refer :all]
-    [clojure.java.io :as io]))
+   [reitit.swagger :as swagger]
+   [reitit.swagger-ui :as swagger-ui]
+   [reitit.ring.coercion :as coercion]
+   [reitit.coercion.spec :as spec-coercion]
+   [reitit.ring.middleware.muuntaja :as muuntaja]
+   [reitit.ring.middleware.multipart :as multipart]
+   [reitit.ring.middleware.parameters :as parameters]
+   [line-web-scraper.middleware.formats :as formats]
+   [line-web-scraper.middleware.exception :as exception]
+   [ring.util.http-response :refer :all]
+   [line-web-scraper.scrape.api :as scrape]
+   [clojure.java.io :as io]))
 
 (defn service-routes []
   ["/api"
@@ -44,12 +45,20 @@
 
     ["/api-docs/*"
      {:get (swagger-ui/create-swagger-ui-handler
-             {:url "/api/swagger.json"
-              :config {:validator-url nil}})}]]
+            {:url "/api/swagger.json"
+             :config {:validator-url nil}})}]]
 
    ["/ping"
     {:get (constantly (ok {:message "pong"}))}]
-   
+
+   ["/check-url"
+    {:swagger {:tags ["check-url"]}}
+    ["/lp-tags"
+     {:post {:summary "check-url to find lp-tags with url as body parameters"
+             :parameters {:body {:url string?}}
+             :handler (fn [{{{:keys [url]} :body} :parameters}]
+                        {:status 200
+                         :body (scrape/check-lp-tag url)})}}]]
 
    ["/math"
     {:swagger {:tags ["math"]}}
