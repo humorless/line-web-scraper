@@ -53,12 +53,12 @@
 
    ["/check-url"
     {:swagger {:tags ["check-url"]}}
-    ["/lp-tags"
-     {:post {:summary "check-url to find lp-tags with url as body parameters"
+    ["/tags"
+     {:post {:summary "check-url to find tags with url as body parameters"
              :parameters {:body {:url string?}}
              :handler (fn [{{{:keys [url]} :body} :parameters}]
                         {:status 200
-                         :body (scrape/check-lp-tag url)})}}]]
+                         :body (scrape/check-tag url)})}}]]
 
    ["/files"
     {:swagger {:tags ["files"]}}

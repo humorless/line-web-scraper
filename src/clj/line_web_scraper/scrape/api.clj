@@ -5,7 +5,7 @@
    [clojure.string :as string]
    [clojure.tools.logging :as log]))
 
-(defn- exist-lp-tag
+(defn- exist-tag
   [dr]
   (filter #(string/includes? % "FREECOINS_")
           (map #(api/get-element-inner-html-el dr %)
@@ -17,24 +17,24 @@
         (map #(api/get-element-attr-el dr % "src")
              (api/query-all dr {:xpath ".//script"}))))
 
-(defn- map-lp-checkers-to-url
+(defn- map-checkers-to-url
   [dr url tag-ck script-ck wait-seconds]
   (log/info "scrape " url)
   (api/go dr url)
   (api/wait wait-seconds)
   (let [d1 (tag-ck dr)
         d2 (script-ck dr)]
-    (log/info ":exist-lp-tag: " d1)
+    (log/info ":exist-tag: " d1)
     (log/info ":exist-lfc5: " d2)
-    {:exist-lp-tag d1
+    {:exist-tag d1
      :exist-lfc5 d2}))
 
-(defn check-lp-tag
+(defn check-tag
   " dr stands for chrome-headless driver
     url stands for the target url"
   ([url]
-   (check-lp-tag url 1))
+   (check-tag url 1))
   ([url wait-seconds]
    (api/with-chrome-headless nil driver
-     (map-lp-checkers-to-url
-      driver url exist-lp-tag exist-lfc5 wait-seconds))))
+     (map-checkers-to-url
+      driver url exist-tag exist-lfc5 wait-seconds))))
