@@ -1,2 +1,3 @@
 {:prod false
+ :cors-regex-str "http://10.20.30.40:8280"
  :port 3000}

@@ -26,6 +26,7 @@
                  [org.webjars/webjars-locator "0.40"]
                  [ring-webjars "0.2.0"]
                  [ring/ring-core "1.8.0"]
+                 [ring-cors "0.1.13"]
                  [ring/ring-defaults "0.3.2"]
                  [selmer "1.12.23"]
                  [etaoin "0.3.6"]]
